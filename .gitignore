@@ -6,3 +6,4 @@ Homestead.json
 /composer.lock
 /.env
 /vendor/*
+/public/images/upload/*
