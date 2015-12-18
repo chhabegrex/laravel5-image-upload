@@ -29,7 +29,7 @@ class PageController extends Controller {
 
 	public function frontPage()
 	{
-		return view('pages.front', array());
+		return view('pages.front', array('page_title' => "Upload Page"));
 	}
 
 }
