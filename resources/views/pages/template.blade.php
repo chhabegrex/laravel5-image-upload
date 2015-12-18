@@ -48,6 +48,9 @@
 						<li class="active"> 
 							<a href="/">Front Page</a> 
 						</li>
+						<li class=""> 
+							<a href="/admin">List Page</a> 
+						</li>
 					</ul> 
 				</nav> 
 			</div>

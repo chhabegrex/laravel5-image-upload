@@ -19,3 +19,10 @@ Route::get('/', [
 
 // Upload image
 Route::post('image', 'PageController@postImage');
+
+
+// Admin page - list images
+Route::get('admin', [
+	'uses' => 'PageController@adminPage', 
+	'as' => 'admin'
+]);

@@ -27,6 +27,13 @@ class PageController extends Controller {
 		$this->image_gestion = $image_gestion;
 	}
 
+    public function adminPage()
+    {
+        $images = $this->image_gestion->search();
+        
+        return view('pages.admin', array('images' => $images, 'page_title' =>   'List Page'));
+    }
+
 	public function frontPage()
 	{
 		return view('pages.front', array('page_title' => "Upload Page"));

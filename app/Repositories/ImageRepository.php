@@ -79,4 +79,64 @@ class ImageRepository extends BaseRepository {
         $image->save();
         return $image;
     }
+
+
+    
+    /**
+     * Get search collection.
+     *
+     * @param  array  $search_options
+     * @param  Int  $offset
+     * @param  Int  $limit
+     * @return array
+     */
+    public function search($search_options = array(), $offset = 0, $limit = 0)
+    {
+        if(isset($search_options['image_id']))
+        {
+            $this->model->where('image_id', '=', $search_options['image_id']);
+        }
+
+        if(isset($search_options['image_name']))
+        {
+            $this->model->where('image_name', '=', $search_options['image_name']);
+        }
+
+        if(isset($search_options['image_extension']))
+        {
+            $this->model->where('image_extension', '=', $search_options['image_extension']);
+        }
+
+        if(isset($search_options['image_location']))
+        {
+            $this->model->where('image_location', '=', $search_options['image_location']);
+        }
+
+
+        if(isset($search_options['order_by']) && isset($search_options['order_type']))
+        {
+            $this->model->orderBy($search_options['order_by'], $search_options['order_type']);
+        }
+        else
+        {
+            $this->model->orderBy('image_id', 'desc');   
+        }
+
+        if(isset($search_options['group_by']))
+        {
+            $this->model->groupBy($search_options['group_by']);
+        }
+
+        if($offset != 0)
+        {
+            $this->model->skip($offset);
+        }
+
+        if($limit != 0)
+        {
+            $this->model->take($limit);
+        }
+
+        return $this->model->get();
+    }
 }
