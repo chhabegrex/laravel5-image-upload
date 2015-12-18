@@ -4,3 +4,5 @@ Homestead.yaml
 Homestead.json
 /.project
 /composer.lock
+/.env
+/vendor/*
