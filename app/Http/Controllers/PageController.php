@@ -32,4 +32,89 @@ class PageController extends Controller {
 		return view('pages.front', array('page_title' => "Upload Page"));
 	}
 
+	
+    public function postImage(Request $request)
+	{
+	    $validator = Validator::make($request->all(), [
+            'height' => 'integer',
+            'width' => 'integer',
+            'image_file'	=>	'required|image|mimes:png,jpg,jpeg,gif,bmp'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('/')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+		
+		// if pass validation
+		$image_name = $request->file('image_file')->getClientOriginalName(); 
+		$image_extension = $request->file('image_file')->getClientOriginalExtension();
+
+		$image_new_name = md5(microtime(true));
+		$temp_file = base_path() . '/public/images/upload/'.strtolower($image_new_name . '_temp.' . $image_extension);
+
+		$request->file('image_file')
+			->move( base_path() . '/public/images/upload/', strtolower($image_new_name . '_temp.' . $image_extension) );
+
+        $origin_size = getimagesize( $temp_file );
+        $origin_width = $origin_size[0];
+        $origin_height = $origin_size[1];
+
+        // resize
+        $image_resize = new ImageResize($temp_file );
+
+        if( trim( $request->get('height') ) != "")
+        {
+        	$height = $request->get('height');
+
+        	
+        }
+        else
+        {
+			$height = 0;        	
+        }
+
+        if( trim( $request->get('width') ) != "")
+        {
+        	$width = $request->get('width');
+        	
+        }
+        else
+        {
+        	$width = 0;
+        }
+
+        if($width > 0 && $height > 0)
+        {
+        	$image_resize->resize($width, $height);	
+        }
+        else if($width == 0 && $height > 0)
+        {
+        	$image_resize->resizeToHeight($height);
+        }
+        else if($width > 0 && $height == 0) 
+        {
+        	$image_resize->resizeToWidth($width);
+        }
+        $image_resize->save( base_path() . '/public/images/upload/' . $image_new_name . '.' . $image_extension );
+        $image_location = '/images/upload/' . $image_new_name . '.' . $image_extension;
+
+        File::delete($temp_file);
+
+        $image_data = array(
+        	'image_name'	=>	$image_name
+        	,'image_extension'	=>	$image_extension
+        	,'image_location'	=>	$image_location
+        	,'origin_height'	=>	$origin_height
+        	,'origin_width'		=>	$origin_width
+        	,'height'			=>	$height
+        	,'width'			=>	$width
+        );
+
+        $this->image_gestion->saveImage($image_data);
+
+        return redirect('/')->with('message', 'Successfully upload image!');
+	}	
+
 }

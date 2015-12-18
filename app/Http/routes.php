@@ -16,3 +16,6 @@ Route::get('/', [
 	'uses' => 'PageController@frontPage', 
 	'as' => 'home'
 ]);
+
+// Upload image
+Route::post('image', 'PageController@postImage');

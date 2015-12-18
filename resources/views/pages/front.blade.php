@@ -9,6 +9,20 @@
 </div>
 
 <div class="container content-container">
+	@if (session('message'))
+    <div class="alert alert-success">
+	        {{ session('message') }}
+	    </div>
+	@endif
+	@if (count($errors) > 0)
+	    <div class="alert alert-danger">
+	        <ul>
+	            @foreach ($errors->all() as $error)
+	                <li>{{ $error }}</li>
+	            @endforeach
+	        </ul>
+	    </div>
+	@endif
 	<div class="row">
 		<div class="col-md-10">
 			<form method="post" enctype="multipart/form-data" action="image">
