@@ -11,18 +11,22 @@
 |
 */
 
-// Home
-Route::get('/', [
-	'uses' => 'PageController@frontPage', 
-	'as' => 'home'
-]);
+Route::group(['middleware' => ['web']], function () {
+	// Home
+	Route::get('/', [
+		'uses' => 'PageController@frontPage', 
+		'as' => 'home'
+	]);
 
-// Upload image
-Route::post('image', 'PageController@postImage');
+	// Upload image
+	Route::post('image', 'PageController@postImage');
 
 
-// Admin page - list images
-Route::get('admin', [
-	'uses' => 'PageController@adminPage', 
-	'as' => 'admin'
-]);
+	// Admin page - list images
+	Route::get('admin', [
+		'uses' => 'PageController@adminPage', 
+		'as' => 'admin'
+	]);
+
+
+});
